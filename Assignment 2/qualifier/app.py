@@ -7,6 +7,7 @@ Example:
     $ python app.py
 """
 import sys
+import csv
 import fire
 import questionary
 from pathlib import Path
@@ -23,6 +24,14 @@ from qualifier.filters.credit_score import filter_credit_score
 from qualifier.filters.debt_to_income import filter_debt_to_income
 from qualifier.filters.loan_to_value import filter_loan_to_value
 
+#function to save qualifying data as a file 
+
+# def save_csv():
+#     with open(output_path,'w',newline='') as f:
+#         writer = csv.DictWriter(f,fieldnames = header)
+#         writer.writeheader()
+#         for i in qualifying_data:
+#             writer.writerow({})
 
 def load_bank_data():
     """Ask for the file path to the latest banking data and load the CSV file.
@@ -110,6 +119,20 @@ def save_qualifying_loans(qualifying_loans):
     """
     # @TODO: Complete the usability dialog for savings the CSV Files.
     # YOUR CODE HERE!
+    header = ["Lender","Max Loan Amount","Max LTV","Max DTI"
+              ,"Min Credit Score","Interest Rate"]
+
+    # Set the output file path
+    output_path = Path("data/qualifying_loans.csv")
+
+    with open(output_path,'w',newline='') as f:
+        writer = csv.DictWriter(f,fieldnames = header)
+        writer.writeheader()
+        for i in qualifying_loans:
+            #Lender,Max Loan Amount,Max LTV,Max DTI,Min Credit Score,Interest Rate
+            writer.writerow({"Lender":i[0],"Max Loan Amount":i[1],"Max LTV":i[2]
+                            ,"Max DTI":i[3],"Min Credit Score":i[4],"Interest Rate":i[5]})
+            
 
 
 def run():
